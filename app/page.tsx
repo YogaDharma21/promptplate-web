@@ -1,7 +1,10 @@
-import Link from "next/link";
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
+    const router = useRouter();
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-black via-neutral-900 to-red-950/50 p-4 text-white">
             <main className="text-center">
@@ -12,10 +15,12 @@ export default function HomePage() {
                     Discover, share, and create amazing prompts for AI-powered
                     creativity
                 </p>
+
                 <Button
                     size="lg"
                     type="submit"
                     className="border border-neutral-700 bg-neutral-800 text-white transition-colors hover:bg-neutral-700"
+                    onClick={() => router.push("/login")}
                 >
                     Get Started
                 </Button>
