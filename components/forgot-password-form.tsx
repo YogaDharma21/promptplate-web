@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 
-export function RegisterForm({
+export function ForgotPasswordForm({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<"div">) {
@@ -19,20 +19,21 @@ export function RegisterForm({
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>
                 <CardHeader className="text-center">
-                    <CardTitle className="text-xl">Create an account</CardTitle>
+                    <CardTitle className="text-xl">
+                        Forgot your password?
+                    </CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form>
                         <div className="grid gap-6">
                             <div className="grid gap-6">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="name">Name</Label>
-                                    <Input
-                                        id="name"
-                                        type="text"
-                                        placeholder="John Doe"
-                                        required
-                                    />
+                                    <p className="text-sm text-muted-foreground md:text-base">
+                                        Forgot your password? No problem. Just
+                                        let us know your email address and we
+                                        will email you a password reset link
+                                        that will allow you to choose a new one.
+                                    </p>
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="email">Email</Label>
@@ -43,30 +44,9 @@ export function RegisterForm({
                                         required
                                     />
                                 </div>
-                                <div className="grid gap-2">
-                                    <div className="flex items-center">
-                                        <Label htmlFor="password">
-                                            Password
-                                        </Label>
-                                    </div>
-                                    <Input
-                                        id="password"
-                                        type="password"
-                                        required
-                                    />
-                                </div>
                                 <Button type="submit" className="w-full">
-                                    Sign up
+                                    Email password reset link
                                 </Button>
-                            </div>
-                            <div className="text-center text-sm">
-                                Already have an account?{" "}
-                                <Link
-                                    href="/login"
-                                    className="underline underline-offset-4 cursor-pointer"
-                                >
-                                    Login
-                                </Link>
                             </div>
                         </div>
                     </form>
