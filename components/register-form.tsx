@@ -9,13 +9,12 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export function RegisterForm({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-    const router = useRouter();
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>
@@ -49,14 +48,12 @@ export function RegisterForm({
                                         <Label htmlFor="password">
                                             Password
                                         </Label>
-                                        <div
-                                            onClick={() =>
-                                                router.push("/forgot-password")
-                                            }
+                                        <Link
+                                            href="/forgot-password"
                                             className="ml-auto text-sm underline-offset-4 hover:underline cursor-pointer"
                                         >
                                             Forgot your password?
-                                        </div>
+                                        </Link>
                                     </div>
                                     <Input
                                         id="password"
@@ -70,12 +67,12 @@ export function RegisterForm({
                             </div>
                             <div className="text-center text-sm">
                                 Already have an account?{" "}
-                                <span
-                                    onClick={() => router.push("/login")}
+                                <Link
+                                    href="/login"
                                     className="underline underline-offset-4 cursor-pointer"
                                 >
                                     Login
-                                </span>
+                                </Link>
                             </div>
                         </div>
                     </form>
@@ -83,19 +80,19 @@ export function RegisterForm({
             </Card>
             <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
                 By clicking continue, you agree to our{" "}
-                <span
-                    onClick={() => router.push("/terms-of-service")}
+                <Link
+                    href="/terms-of-service"
                     className="underline underline-offset-4 cursor-pointer"
                 >
                     Terms of Service
-                </span>{" "}
+                </Link>{" "}
                 and{" "}
-                <span
-                    onClick={() => router.push("/privacy-policy")}
+                <Link
+                    href="/privacy-policy"
                     className="underline underline-offset-4 cursor-pointer"
                 >
                     Privacy Policy
-                </span>
+                </Link>
                 .
             </div>
         </div>
