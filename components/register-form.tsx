@@ -10,11 +10,77 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+const formSchema = z.object({
+    username: z.string().min(2, {
+        message: "Username must be at least 2 characters.",
+    }),
+    email: z.string().email({
+        message: "Invalid email address.",
+    }),
+    password: z.string().min(8, {
+        message: "Password must be at least 8 characters.",
+    }),
+});
 export function RegisterForm({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+    // const router = useRouter()
+
+    // const { login } = useAuth({
+    //     middleware: 'guest',
+    //     redirectIfAuthenticated: '/dashboard',
+    // })
+
+    // const [email, setEmail] = useState('')
+    // const [password, setPassword] = useState('')
+    // const [shouldRemember, setShouldRemember] = useState(false)
+    // const [errors, setErrors] = useState([])
+    // const [status, setStatus] = useState(null)
+
+    // useEffect(() => {
+    //     if (router.reset?.length > 0 && errors.length === 0) {
+    //         setStatus(atob(router.reset))
+    //     } else {
+    //         setStatus(null)
+    //     }
+    // })
+
+    // const submitForm = async event => {
+    //     event.preventDefault()
+
+    //     login({
+    //         email,
+    //         password,
+    //         remember: shouldRemember,
+    //         setErrors,
+    //         setStatus,
+    //     })
+    // }
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            username: "",
+            email: "",
+            password: "",
+        },
+    });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        console.log(values);
+    }
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>
@@ -22,43 +88,62 @@ export function RegisterForm({
                     <CardTitle className="text-xl">Create an account</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <form>
-                        <div className="grid gap-6">
-                            <div className="grid gap-6">
-                                <div className="grid gap-2">
-                                    <Label htmlFor="name">Name</Label>
-                                    <Input
-                                        id="name"
-                                        type="text"
-                                        placeholder="John Doe"
-                                        required
-                                    />
-                                </div>
-                                <div className="grid gap-2">
-                                    <Label htmlFor="email">Email</Label>
-                                    <Input
-                                        id="email"
-                                        type="email"
-                                        placeholder="m@example.com"
-                                        required
-                                    />
-                                </div>
-                                <div className="grid gap-2">
-                                    <div className="flex items-center">
-                                        <Label htmlFor="password">
-                                            Password
-                                        </Label>
-                                    </div>
-                                    <Input
-                                        id="password"
-                                        type="password"
-                                        required
-                                    />
-                                </div>
-                                <Button type="submit" className="w-full">
-                                    Sign up
-                                </Button>
-                            </div>
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="flex flex-col gap-5"
+                        >
+                            <FormField
+                                control={form.control}
+                                name="username"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Username</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="username"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Email</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="example@gmail.com"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Password</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="********"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Button type="submit" className="w-full">
+                                Submit
+                            </Button>
                             <div className="text-center text-sm">
                                 Already have an account?{" "}
                                 <Link
@@ -68,8 +153,8 @@ export function RegisterForm({
                                     Login
                                 </Link>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </Form>
                 </CardContent>
             </Card>
             <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">

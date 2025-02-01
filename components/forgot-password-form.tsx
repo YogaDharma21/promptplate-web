@@ -10,11 +10,39 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+const formSchema = z.object({
+    email: z.string().email({
+        message: "Invalid email address.",
+    }),
+});
 
 export function ForgotPasswordForm({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            email: "",
+        },
+    });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        console.log(values);
+    }
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>
@@ -24,32 +52,38 @@ export function ForgotPasswordForm({
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <form>
-                        <div className="grid gap-6">
-                            <div className="grid gap-6">
-                                <div className="grid gap-2">
-                                    <p className="text-sm text-muted-foreground md:text-base">
-                                        Forgot your password? No problem. Just
-                                        let us know your email address and we
-                                        will email you a password reset link
-                                        that will allow you to choose a new one.
-                                    </p>
-                                </div>
-                                <div className="grid gap-2">
-                                    <Label htmlFor="email">Email</Label>
-                                    <Input
-                                        id="email"
-                                        type="email"
-                                        placeholder="m@example.com"
-                                        required
-                                    />
-                                </div>
-                                <Button type="submit" className="w-full">
-                                    Email password reset link
-                                </Button>
-                            </div>
-                        </div>
-                    </form>
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="flex flex-col gap-5"
+                        >
+                            <p className="md:text-base text-sm text-muted-foreground">
+                                Forgot your password? No problem. Just let us
+                                know your email address and we will email you a
+                                password reset link that will allow you to
+                                choose a new one
+                            </p>
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Email</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="example@gmail.com"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Button type="submit" className="w-full">
+                                Submit
+                            </Button>
+                        </form>
+                    </Form>
                 </CardContent>
             </Card>
             <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
