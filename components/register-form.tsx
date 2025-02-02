@@ -22,6 +22,10 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/auth";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 const formSchema = z.object({
     username: z.string().min(2, {
         message: "Username must be at least 2 characters.",
@@ -32,54 +36,64 @@ const formSchema = z.object({
     password: z.string().min(8, {
         message: "Password must be at least 8 characters.",
     }),
+    password_confirmation: z.string().min(8, {
+        message: "Password Confirmation must be at least 8 characters.",
+    }),
 });
 export function RegisterForm({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-    // const router = useRouter()
+    const router = useRouter();
+    const { toast } = useToast();
+    const { register } = useAuth({
+        middleware: "guest",
+        redirectIfAuthenticated: "/dashboard",
+    });
 
-    // const { login } = useAuth({
-    //     middleware: 'guest',
-    //     redirectIfAuthenticated: '/dashboard',
-    // })
+    const [errors, setErrors] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
-    // const [email, setEmail] = useState('')
-    // const [password, setPassword] = useState('')
-    // const [shouldRemember, setShouldRemember] = useState(false)
-    // const [errors, setErrors] = useState([])
-    // const [status, setStatus] = useState(null)
-
-    // useEffect(() => {
-    //     if (router.reset?.length > 0 && errors.length === 0) {
-    //         setStatus(atob(router.reset))
-    //     } else {
-    //         setStatus(null)
-    //     }
-    // })
-
-    // const submitForm = async event => {
-    //     event.preventDefault()
-
-    //     login({
-    //         email,
-    //         password,
-    //         remember: shouldRemember,
-    //         setErrors,
-    //         setStatus,
-    //     })
-    // }
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             username: "",
             email: "",
             password: "",
+            password_confirmation: "",
         },
     });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsLoading(true);
+        setErrors([]);
+        try {
+            const response = await register({
+                name: values.username,
+                email: values.email,
+                password: values.password,
+                password_confirmation: values.password_confirmation,
+                setErrors,
+            });
+            if (response?.success) {
+                toast({
+                    title: "Success",
+                    description:
+                        "Login successful! Redirecting to your dashboard.",
+                    variant: "default",
+                });
+            } else {
+                toast({
+                    title: "Error",
+                    description: response?.error.response.data.message,
+                    variant: "destructive",
+                });
+            }
+        } catch (error) {
+            console.error("An error occurred: ", error);
+        } finally {
+            setIsLoading(false);
+        }
     }
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -91,7 +105,7 @@ export function RegisterForm({
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
-                            className="flex flex-col gap-5"
+                            className="flex flex-col gap-4"
                         >
                             <FormField
                                 control={form.control}
@@ -133,6 +147,7 @@ export function RegisterForm({
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
                                             <Input
+                                                type="password"
                                                 placeholder="********"
                                                 {...field}
                                             />
@@ -141,8 +156,57 @@ export function RegisterForm({
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="w-full">
-                                Submit
+                            <FormField
+                                control={form.control}
+                                name="password_confirmation"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            Password Confirmation
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="password"
+                                                placeholder="********"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Button
+                                type="submit"
+                                className="w-full"
+                                disabled={isLoading}
+                            >
+                                {isLoading ? (
+                                    <>
+                                        <svg
+                                            className="mr-2 h-4 w-4 animate-spin"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <circle
+                                                className="opacity-25"
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="currentColor"
+                                                strokeWidth="4"
+                                            />
+                                            <path
+                                                className="opacity-75"
+                                                fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                            />
+                                        </svg>
+                                        Loading...
+                                    </>
+                                ) : (
+                                    "Submit"
+                                )}
                             </Button>
                             <div className="text-center text-sm">
                                 Already have an account?{" "}

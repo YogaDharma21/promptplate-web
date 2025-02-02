@@ -1,4 +1,6 @@
-import useSWR from "swr";
+"use client";
+
+import useSWR, { mutate } from "swr";
 import axios from "@/lib/axios";
 import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -7,8 +9,8 @@ export const useAuth = ({
     middleware,
     redirectIfAuthenticated,
 }: {
-    middleware: string;
-    redirectIfAuthenticated: string;
+    middleware?: string;
+    redirectIfAuthenticated?: string;
 }) => {
     const router = useRouter();
     const params = useParams();
@@ -35,43 +37,40 @@ export const useAuth = ({
         ...props
     }: {
         setErrors: any;
-        props: any;
+        name: string;
+        email: string;
+        password: string;
+        password_confirmation: string;
     }) => {
         await csrf();
 
         setErrors([]);
-
-        axios
-            .post("/register", props)
-            .then(() => mutate())
-            .catch((error) => {
-                if (error.response.status !== 422) throw error;
-
-                setErrors(error.response.data.errors);
-            });
+        try {
+            await axios.post("/register", props).then(() => mutate());
+            return { success: true };
+        } catch (error: any) {
+            setErrors(error.response.data.errors);
+            return { success: false, error };
+        }
     };
 
     const login = async ({
         setErrors,
-        setStatus,
         ...props
     }: {
         setErrors: any;
-        setStatus: any;
-        props: any;
+        email: string;
+        password: string;
     }) => {
         await csrf();
-
         setErrors([]);
-        setStatus(null);
-        axios
-            .post("/login", props)
-            .then(() => mutate())
-            .catch((error) => {
-                if (error.response.status !== 422) throw error;
-
-                setErrors(error.response.data.errors);
-            });
+        try {
+            await axios.post("/login", props).then(() => mutate());
+            return { success: true };
+        } catch (error: any) {
+            setErrors(error.response.data.errors);
+            return { success: false, error };
+        }
     };
 
     const forgotPassword = async ({
@@ -133,9 +132,9 @@ export const useAuth = ({
     const logout = async () => {
         if (!error) {
             await axios.post("/logout").then(() => mutate());
+            return { success: true };
         }
-
-        window.location.pathname = "/login";
+        return { success: false };
     };
 
     useEffect(() => {
