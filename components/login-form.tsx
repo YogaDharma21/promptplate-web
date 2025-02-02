@@ -188,18 +188,18 @@ export function LoginForm({
                     </Form>
                 </CardContent>
             </Card>
-            <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
+            <div className="text-balance text-center text-xs text-muted-foreground">
                 By clicking continue, you agree to our{" "}
                 <Link
                     href="/terms-of-service"
-                    className="underline underline-offset-4 cursor-pointer"
+                    className="underline underline-offset-4 cursor-pointer hover:text-primary"
                 >
                     Terms of Service
                 </Link>{" "}
                 and{" "}
                 <Link
                     href="/privacy-policy"
-                    className="underline underline-offset-4 cursor-pointer"
+                    className="underline underline-offset-4 cursor-pointer hover:text-primary"
                 >
                     Privacy Policy
                 </Link>

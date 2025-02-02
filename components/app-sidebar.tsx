@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
     BookOpen,
     Bot,
@@ -22,6 +21,9 @@ import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
@@ -31,133 +33,121 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import Loading from "@/app/Loading";
 import { useAuth } from "@/hooks/auth";
-
+import { SearchForm } from "./search-form";
+import { useState } from "react";
 const data = {
-    user: {
-        name: "shadcn",
-        email: "m@example.com",
-        avatar: "/avatars/shadcn.jpg",
-    },
     navMain: [
         {
-            title: "Playground",
+            title: "Learning",
             url: "#",
-            icon: SquareTerminal,
-            isActive: true,
-            items: [
-                {
-                    title: "History",
-                    url: "#",
-                },
-                {
-                    title: "Starred",
-                    url: "#",
-                },
-                {
-                    title: "Settings",
-                    url: "#",
-                },
-            ],
+            count: 15,
         },
         {
-            title: "Models",
+            title: "Programming",
             url: "#",
-            icon: Bot,
-            items: [
-                {
-                    title: "Genesis",
-                    url: "#",
-                },
-                {
-                    title: "Explorer",
-                    url: "#",
-                },
-                {
-                    title: "Quantum",
-                    url: "#",
-                },
-            ],
+            count: 24,
         },
         {
-            title: "Documentation",
+            title: "Web Development",
             url: "#",
-            icon: BookOpen,
-            items: [
-                {
-                    title: "Introduction",
-                    url: "#",
-                },
-                {
-                    title: "Get Started",
-                    url: "#",
-                },
-                {
-                    title: "Tutorials",
-                    url: "#",
-                },
-                {
-                    title: "Changelog",
-                    url: "#",
-                },
-            ],
+            count: 17,
         },
         {
-            title: "Settings",
+            title: "Mobile Development",
             url: "#",
-            icon: Settings2,
-            items: [
-                {
-                    title: "General",
-                    url: "#",
-                },
-                {
-                    title: "Team",
-                    url: "#",
-                },
-                {
-                    title: "Billing",
-                    url: "#",
-                },
-                {
-                    title: "Limits",
-                    url: "#",
-                },
-            ],
-        },
-    ],
-    navSecondary: [
-        {
-            title: "Support",
-            url: "#",
-            icon: LifeBuoy,
+            count: 9,
         },
         {
-            title: "Feedback",
+            title: "AI & Data Science",
             url: "#",
-            icon: Send,
-        },
-    ],
-    projects: [
-        {
-            name: "Design Engineering",
-            url: "#",
-            icon: Frame,
+            count: 28,
         },
         {
-            name: "Sales & Marketing",
+            title: "DevOps",
             url: "#",
-            icon: PieChart,
+            count: 12,
         },
         {
-            name: "Travel",
+            title: "Cloud Computing",
             url: "#",
-            icon: Map,
+            count: 21,
+        },
+        {
+            title: "Cybersecurity",
+            url: "#",
+            count: 7,
+        },
+        {
+            title: "UI/UX Design",
+            url: "#",
+            count: 19,
+        },
+        {
+            title: "Career & Trends",
+            url: "#",
+            count: 5,
+        },
+        {
+            title: "Game Development",
+            url: "#",
+            count: 22,
+        },
+        {
+            title: "Data Engineering",
+            url: "#",
+            count: 11,
+        },
+        {
+            title: "Software Testing",
+            url: "#",
+            count: 14,
+        },
+        {
+            title: "Machine Learning",
+            url: "#",
+            count: 30,
+        },
+        {
+            title: "Blockchain",
+            url: "#",
+            count: 4,
+        },
+        {
+            title: "AR/VR",
+            url: "#",
+            count: 10,
+        },
+        {
+            title: "IoT",
+            url: "#",
+            count: 16,
+        },
+        {
+            title: "Networking",
+            url: "#",
+            count: 8,
+        },
+        {
+            title: "Database Management",
+            url: "#",
+            count: 26,
+        },
+        {
+            title: "Project Management",
+            url: "#",
+            count: 13,
         },
     ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ ...props }) {
     const { user } = useAuth({});
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const filteredNavMain = data.navMain.filter((item) =>
+        item.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     if (!user) {
         return <Loading />;
     }
@@ -170,7 +160,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" className="flex gap-3">
+                            <Link
+                                href="/dashboard"
+                                className="flex gap-3 w-full"
+                            >
                                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                                     <Command className="size-4" />
                                 </div>
@@ -183,11 +176,29 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
+                <SearchForm className="w-full" onSearch={setSearchQuery} />
             </SidebarHeader>
             <SidebarContent>
-                <NavMain items={data.navMain} />
+                {/* <NavMain items={data.navMain} /> */}
+                <SidebarGroup>
+                    {filteredNavMain.map((item) => (
+                        <SidebarMenu key={item.title}>
+                            <SidebarMenuItem key={item.title}>
+                                <SidebarMenuButton asChild>
+                                    <div className="flex justify-between">
+                                        <a href={item.url}>{item.title}</a>
+                                        <p className="text-muted-foreground">
+                                            {item.count}
+                                        </p>
+                                    </div>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        </SidebarMenu>
+                    ))}
+                </SidebarGroup>
             </SidebarContent>
             <SidebarFooter>
+                <Button>Create New Prompt</Button>
                 <NavUser user={user} />
             </SidebarFooter>
         </Sidebar>
