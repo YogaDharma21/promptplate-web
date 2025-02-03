@@ -13,7 +13,6 @@ export default function HomePage() {
                 <p className="mx-auto mb-8 max-w-md text-xl text-neutral-400 md:text-2xl">
                     Share prompts, spark ideas.
                 </p>
-
                 <Link href="/login" passHref>
                     <Button
                         size="lg"
@@ -23,6 +22,7 @@ export default function HomePage() {
                         Get Started
                     </Button>
                 </Link>
+
                 <footer className="mt-16 text-sm text-neutral-500">
                     © {new Date().getFullYear()} Prompt Plate. All rights
                     reserved.

@@ -1,38 +1,24 @@
 "use client";
-
-import {
-    BookOpen,
-    Bot,
-    Command,
-    Frame,
-    LifeBuoy,
-    Map,
-    PieChart,
-    Send,
-    Settings2,
-    SquareTerminal,
-} from "lucide-react";
-
-import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
-import { NavSecondary } from "@/components/nav-secondary";
-import { NavUser } from "@/components/nav-user";
+import { GalleryVerticalEnd } from "lucide-react";
 import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
     SidebarGroup,
-    SidebarGroupContent,
-    SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarMenuSub,
+    SidebarMenuSubButton,
+    SidebarMenuSubItem,
+    SidebarRail,
 } from "@/components/ui/sidebar";
-import { Button } from "./ui/button";
 import Link from "next/link";
-import Loading from "@/app/Loading";
+import { NavUser } from "./nav-user";
+import { Button } from "./ui/button";
 import { useAuth } from "@/hooks/auth";
+import Loading from "@/app/Loading";
 import { SearchForm } from "./search-form";
 import { useState } from "react";
 const data = {
@@ -139,68 +125,73 @@ const data = {
         },
     ],
 };
-
-export function AppSidebar({ ...props }) {
-    const { user } = useAuth({});
+export function AppSidebar({
+    user,
+    ...props
+}: React.ComponentProps<typeof Sidebar> & { user: any }) {
     const [searchQuery, setSearchQuery] = useState("");
 
     const filteredNavMain = data.navMain.filter((item) =>
         item.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
-    if (!user) {
-        return <Loading />;
-    }
     return (
-        <Sidebar
-            className="top-[--header-height] !h-[calc(100svh-var(--header-height))]"
-            {...props}
-        >
+        <Sidebar {...props}>
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link
-                                href="/dashboard"
-                                className="flex gap-3 w-full"
-                            >
+                            <a href="#">
                                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                    <Command className="size-4" />
+                                    <GalleryVerticalEnd className="size-4" />
                                 </div>
-                                <div className="grid flex-1 text-left text-sm leading-tight">
-                                    <span className="truncate font-semibold text-lg ">
+                                <div className="flex flex-col gap-0.5 leading-none">
+                                    <span className="text-lg font-semibold">
                                         Prompt Plate
                                     </span>
                                 </div>
-                            </Link>
+                            </a>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
+                    <SearchForm onSearch={setSearchQuery} />
                 </SidebarMenu>
-                <SearchForm className="w-full" onSearch={setSearchQuery} />
             </SidebarHeader>
             <SidebarContent>
-                {/* <NavMain items={data.navMain} /> */}
                 <SidebarGroup>
-                    {filteredNavMain.map((item) => (
-                        <SidebarMenu key={item.title}>
+                    <SidebarMenu>
+                        {filteredNavMain.map((item) => (
                             <SidebarMenuItem key={item.title}>
                                 <SidebarMenuButton asChild>
-                                    <div className="flex justify-between">
-                                        <a href={item.url}>{item.title}</a>
-                                        <p className="text-muted-foreground">
+                                    <div className="flex justify-between items-center">
+                                        <a
+                                            href={item.url}
+                                            className="font-medium"
+                                        >
+                                            {item.title}
+                                        </a>
+                                        <span className=" text-muted-foreground text-xs font-semibold">
                                             {item.count}
-                                        </p>
+                                        </span>
                                     </div>
                                 </SidebarMenuButton>
+                                {/* <SidebarMenuSub>
+                                    <SidebarMenuSubItem key={item.title}>
+                                        <SidebarMenuSubButton asChild>
+                                            <a href={item.url}>{item.title}</a>
+                                        </SidebarMenuSubButton>
+                                    </SidebarMenuSubItem>
+                                </SidebarMenuSub> */}
                             </SidebarMenuItem>
-                        </SidebarMenu>
-                    ))}
+                        ))}
+                    </SidebarMenu>
                 </SidebarGroup>
             </SidebarContent>
             <SidebarFooter>
-                <Button>Create New Prompt</Button>
+                <Link href={"/create-prompt"}>
+                    <Button className="w-full">Create New Prompt</Button>
+                </Link>
                 <NavUser user={user} />
             </SidebarFooter>
+            <SidebarRail />
         </Sidebar>
     );
 }

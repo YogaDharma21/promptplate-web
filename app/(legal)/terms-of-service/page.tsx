@@ -5,15 +5,17 @@ import React from "react";
 export default function page() {
     return (
         <div className="max-w-2xl mx-auto p-6 space-y-6 my-4">
-            <Link
-                href="/"
-                className="flex items-center gap-2 self-center font-medium cursor-pointer justify-center"
-            >
-                <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
-                    <GalleryVerticalEnd className="size-4" />
-                </div>
-                Prompt Plate
-            </Link>
+            <div>
+                <Link
+                    href="/"
+                    className="flex items-center gap-2 self-center font-medium cursor-pointer justify-center"
+                >
+                    <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
+                        <GalleryVerticalEnd className="size-4" />
+                    </div>
+                    Prompt Plate
+                </Link>
+            </div>
             <h1 className="text-4xl font-bold text-center">Terms of Service</h1>
             <section className="space-y-4">
                 <h2 className="text-2xl font-semibold">1. Introduction</h2>
