@@ -43,11 +43,10 @@ export function LoginForm({
 }: React.ComponentPropsWithoutRef<"div">) {
     const { toast } = useToast();
     const router = useRouter();
-    const { login } = useAuth({
+    const { login, user } = useAuth({
         middleware: "guest",
         redirectIfAuthenticated: "/dashboard",
     });
-
     const [errors, setErrors] = useState<any>([]);
     const [isLoading, setIsLoading] = useState(false);
     const form = useForm<z.infer<typeof formSchema>>({

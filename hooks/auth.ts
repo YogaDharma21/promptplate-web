@@ -24,11 +24,9 @@ export const useAuth = ({
             .get("/api/user")
             .then((res) => res.data)
             .catch((error) => {
-                if (error.response.status !== 409) throw error;
-                router.push("/verify-email");
+                throw error;
             })
     );
-
     const csrf = () => axios.get("/sanctum/csrf-cookie");
 
     const register = async ({
@@ -137,19 +135,31 @@ export const useAuth = ({
     };
 
     useEffect(() => {
-        if (middleware === "guest" && redirectIfAuthenticated && user)
+        if (middleware === "auth" && error?.response?.status === 401) {
+            logout();
+            router.push("/login");
+            return;
+        }
+
+        if (middleware === "auth" && !user?.email_verified_at) {
+            router.push("/verify-email");
+            return;
+        }
+
+        if (middleware === "guest" && redirectIfAuthenticated && user) {
             router.push(redirectIfAuthenticated);
+            return;
+        }
 
-        // if (middleware === 'auth' && !user?.email_verified_at)
-        //     router.push('/verify-email')
-
-        // if (
-        //     window.location.pathname === '/verify-email' &&
-        //     user?.email_verified_at
-        // )
-        //     router.push(redirectIfAuthenticated)
-        if (middleware === "auth" && error) logout();
-    }, [user, error]);
+        if (
+            window.location.pathname === "/verify-email" &&
+            user?.email_verified_at &&
+            redirectIfAuthenticated
+        ) {
+            router.push(redirectIfAuthenticated);
+            return;
+        }
+    }, [user, error, middleware, redirectIfAuthenticated]);
 
     return {
         user,
