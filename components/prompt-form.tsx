@@ -40,38 +40,27 @@ import {
     CommandList,
 } from "./ui/command";
 import { Textarea } from "./ui/textarea";
-
-const languages = [
-    { label: "English", value: "en" },
-    { label: "French", value: "fr" },
-    { label: "German", value: "de" },
-    { label: "Spanish", value: "es" },
-    { label: "Portuguese", value: "pt" },
-    { label: "Russian", value: "ru" },
-    { label: "Japanese", value: "ja" },
-    { label: "Korean", value: "ko" },
-    { label: "Chinese", value: "zh" },
-] as const;
+import { usePrompt } from "@/hooks/prompt";
 
 const formSchema = z.object({
     name: z.string().min(1, {
         message: "Name is required.",
     }),
-    language: z.string({
-        required_error: "Please select a language.",
+    tag: z.number({
+        required_error: "Please select a tag.",
     }),
     content: z.string().min(1, {
         message: "Content is required.",
     }),
 });
 
-export default function PromptForm() {
+export default function PromptForm({ user, tags }: { user: any; tags: any }) {
+    const { createPrompt } = usePrompt({});
     const { toast } = useToast();
     const router = useRouter();
 
     const [errors, setErrors] = useState<any>([]);
     const [isLoading, setIsLoading] = useState(false);
-
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -84,7 +73,27 @@ export default function PromptForm() {
         setIsLoading(true);
         setErrors([]);
         try {
-            console.log(values);
+            const response = await createPrompt({
+                name: values.name,
+                content: values.content,
+                tag_id: values.tag,
+                setErrors,
+            });
+            if (response?.success) {
+                router.push("/dashboard");
+                toast({
+                    title: "Success",
+                    description:
+                        "Creating prompt successful! Redirecting to your dashboard.",
+                    variant: "default",
+                });
+            } else {
+                toast({
+                    title: "Error",
+                    description: response?.error.response.data.message,
+                    variant: "destructive",
+                });
+            }
         } catch (error) {
             console.error("An error occurred: ", error);
         } finally {
@@ -116,10 +125,10 @@ export default function PromptForm() {
                     />
                     <FormField
                         control={form.control}
-                        name="language"
+                        name="tag"
                         render={({ field }) => (
                             <FormItem className="w-full">
-                                <FormLabel>Language</FormLabel>
+                                <FormLabel>Tag</FormLabel>
                                 <Popover>
                                     <FormControl>
                                         <PopoverTrigger asChild>
@@ -133,17 +142,17 @@ export default function PromptForm() {
                                                 )}
                                             >
                                                 {field.value
-                                                    ? languages.find(
-                                                          (language) =>
-                                                              language.value ===
+                                                    ? tags.find(
+                                                          (tag: any) =>
+                                                              tag.id ===
                                                               field.value
-                                                      )?.label
-                                                    : "Select language"}
+                                                      )?.name
+                                                    : "Select tag"}
                                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                             </Button>
                                         </PopoverTrigger>
                                     </FormControl>
-                                    <PopoverContent className="w-[1200px] p-0">
+                                    <PopoverContent className="md:w-[400px] lg:w-[700px] p-0">
                                         <Command>
                                             <CommandInput placeholder="Search language..." />
                                             <CommandList>
@@ -151,35 +160,29 @@ export default function PromptForm() {
                                                     No language found.
                                                 </CommandEmpty>
                                                 <CommandGroup>
-                                                    {languages.map(
-                                                        (language) => (
-                                                            <CommandItem
-                                                                value={
-                                                                    language.label
-                                                                }
-                                                                key={
-                                                                    language.value
-                                                                }
-                                                                onSelect={() => {
-                                                                    form.setValue(
-                                                                        "language",
-                                                                        language.value
-                                                                    );
-                                                                }}
-                                                            >
-                                                                {language.label}
-                                                                <Check
-                                                                    className={cn(
-                                                                        "ml-auto",
-                                                                        language.value ===
-                                                                            field.value
-                                                                            ? "opacity-100"
-                                                                            : "opacity-0"
-                                                                    )}
-                                                                />
-                                                            </CommandItem>
-                                                        )
-                                                    )}
+                                                    {tags.map((tag: any) => (
+                                                        <CommandItem
+                                                            value={tag.name}
+                                                            key={tag.id}
+                                                            onSelect={() => {
+                                                                form.setValue(
+                                                                    "tag",
+                                                                    tag.id
+                                                                );
+                                                            }}
+                                                        >
+                                                            {tag.name}
+                                                            <Check
+                                                                className={cn(
+                                                                    "ml-auto",
+                                                                    tag.id ===
+                                                                        field.value
+                                                                        ? "opacity-100"
+                                                                        : "opacity-0"
+                                                                )}
+                                                            />
+                                                        </CommandItem>
+                                                    ))}
                                                 </CommandGroup>
                                             </CommandList>
                                         </Command>

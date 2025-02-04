@@ -19,15 +19,24 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/hooks/auth";
+import axios from "@/lib/axios";
+import { useEffect, useState } from "react";
 
 export default function page() {
     const { user } = useAuth({});
+    const [tags, setTags] = useState([]);
+    useEffect(() => {
+        axios.get("/api/tag").then((response) => {
+            setTags(response.data);
+        });
+    }, []);
+
     if (!user) {
         return <Loading />;
     }
     return (
-        <div className="flex flex-1 flex-col gap-4 p-4">
-            <PromptForm />
+        <div className="flex flex-1 flex-col gap-4 px-4">
+            <PromptForm user={user} tags={tags} />
             {/* <div className="aspect-video h-12 w-full rounded-lg bg-muted/50" />
                     <div className="aspect-video h-12 w-full rounded-lg bg-muted/50" />
                     <div className="aspect-video h-40 md:h-96 w-full rounded-lg bg-muted/50" />
