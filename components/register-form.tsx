@@ -177,7 +177,7 @@ export function RegisterForm({
                             />
                             <Button
                                 type="submit"
-                                className="w-full"
+                                className="w-full border transition-colors text-primary-foreground font-bold px-6"
                                 disabled={isLoading}
                             >
                                 {isLoading ? (

@@ -11,21 +11,24 @@ const LoginLinks = () => {
         <div className="flex gap-4 items-center justify-center">
             {user ? (
                 <Link href="/dashboard">
-                    <Button className="border border-neutral-700 bg-neutral-800 text-white transition-colors hover:bg-neutral-700">
+                    <Button className="border transition-colors text-white font-bold px-6">
                         Dashboard
                     </Button>
                 </Link>
             ) : (
                 <>
                     <Link href="/login">
-                        <Button className="border border-neutral-700 bg-neutral-800 text-white transition-colors hover:bg-neutral-700">
+                        <Button
+                            className="border text-white transition-colors border-primary font-bold px-6"
+                            variant={"secondary"}
+                        >
                             Login
                         </Button>
                     </Link>
 
                     <Link href="/register">
-                        <Button className="border border-neutral-700 bg-neutral-800 text-white transition-colors hover:bg-neutral-700">
-                            Register
+                        <Button className="border transition-colors text-primary-foreground font-bold px-6">
+                            Get Started for Free
                         </Button>
                     </Link>
                 </>

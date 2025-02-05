@@ -210,8 +210,8 @@ export default function PromptForm({ user, tags }: { user: any; tags: any }) {
                         )}
                     />
                     <Button
+                        className="border transition-colors text-primary-foreground font-bold px-6"
                         type="submit"
-                        className="w-max px-9 py-2"
                         disabled={isLoading}
                     >
                         {isLoading ? (

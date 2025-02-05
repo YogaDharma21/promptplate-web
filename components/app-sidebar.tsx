@@ -43,7 +43,7 @@ export function AppSidebar({
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <Link href="/dashboard">
-                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                                     <GalleryVerticalEnd className="size-4" />
                                 </div>
                                 <div className="flex flex-col gap-0.5 leading-none">
@@ -84,7 +84,9 @@ export function AppSidebar({
             </SidebarContent>
             <SidebarFooter>
                 <Link href={"/create-prompt"}>
-                    <Button className="w-full">Create New Prompt</Button>
+                    <Button className="w-full border transition-colors text-primary-foreground font-bold px-6">
+                        Create New Prompt
+                    </Button>
                 </Link>
                 <NavUser user={user} />
             </SidebarFooter>
