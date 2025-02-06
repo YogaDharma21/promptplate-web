@@ -28,12 +28,14 @@ export function AppSidebar({
 }: React.ComponentProps<typeof Sidebar> & { user: any }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [tags, setTags] = useState<any>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const filteredNavMain = tags.filter((item: any) =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     useEffect(() => {
         axios.get("/api/tag").then((response) => {
             setTags(response.data);
+            setIsLoading(false);
         });
     }, []);
     return (
@@ -60,31 +62,31 @@ export function AppSidebar({
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarMenu>
-                        {filteredNavMain.map((item: any) => (
-                            <SidebarMenuItem key={item.name}>
-                                <SidebarMenuButton asChild>
-                                    <Link
-                                        href={`/tag/${item.name.toLowerCase()}`}
-                                        className="font-medium"
-                                    >
-                                        {item.name}
-                                    </Link>
-                                </SidebarMenuButton>
-                                {/* <SidebarMenuSub>
-                                    <SidebarMenuSubItem key={item.title}>
-                                        <SidebarMenuSubButton asChild>
-                                            <a href={item.url}>{item.title}</a>
-                                        </SidebarMenuSubButton>
-                                    </SidebarMenuSubItem>
-                                </SidebarMenuSub> */}
-                            </SidebarMenuItem>
-                        ))}
+                        {isLoading
+                            ? Array.from({ length: 10 }).map((_, index) => (
+                                  <div
+                                      key={index}
+                                      className="aspect-video h-12 w-full rounded-lg bg-muted/50"
+                                  />
+                              ))
+                            : filteredNavMain.map((item: any) => (
+                                  <SidebarMenuItem key={item.name}>
+                                      <SidebarMenuButton asChild>
+                                          <Link
+                                              href={`/tag/${item.name.toLowerCase()}`}
+                                              className="font-medium"
+                                          >
+                                              {item.name}
+                                          </Link>
+                                      </SidebarMenuButton>
+                                  </SidebarMenuItem>
+                              ))}
                     </SidebarMenu>
                 </SidebarGroup>
             </SidebarContent>
             <SidebarFooter>
                 <Link href={"/create-prompt"}>
-                    <Button className="w-full border transition-colors text-primary-foreground font-bold px-6">
+                    <Button className="w-full transition-colors text-primary-foreground font-bold px-6">
                         Create New Prompt
                     </Button>
                 </Link>

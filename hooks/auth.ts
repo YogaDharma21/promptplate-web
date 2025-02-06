@@ -141,24 +141,24 @@ export const useAuth = ({
             return;
         }
 
-        if (middleware === "auth" && !user?.email_verified_at) {
-            router.push("/verify-email");
-            return;
-        }
+        // if (middleware === "auth" && !user?.email_verified_at) {
+        //     router.push("/verify-email");
+        //     return;
+        // }
 
         if (middleware === "guest" && redirectIfAuthenticated && user) {
             router.push(redirectIfAuthenticated);
             return;
         }
 
-        if (
-            window.location.pathname === "/verify-email" &&
-            user?.email_verified_at &&
-            redirectIfAuthenticated
-        ) {
-            router.push(redirectIfAuthenticated);
-            return;
-        }
+        // if (
+        //     window.location.pathname === "/verify-email" &&
+        //     user?.email_verified_at &&
+        //     redirectIfAuthenticated
+        // ) {
+        //     router.push(redirectIfAuthenticated);
+        //     return;
+        // }
     }, [user, error, middleware, redirectIfAuthenticated]);
 
     return {
