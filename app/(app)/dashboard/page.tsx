@@ -9,23 +9,16 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import { usePrompt } from "@/hooks/prompt";
 import { useToast } from "@/hooks/use-toast";
 import axios from "@/lib/axios";
-import { Copy } from "lucide-react";
+import { Copy, LucideMessageCircleQuestion } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function Page() {
     const [selectedPrompt, setSelectedPrompt] = useState<any>(null);
-    const [prompts, setPrompts] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
     const { toast } = useToast();
-
-    useEffect(() => {
-        axios.get("/api/prompt").then((response) => {
-            setIsLoading(false);
-            setPrompts(response.data);
-        });
-    }, []);
+    const { prompts, isLoading } = usePrompt({ middleware: "auth" });
 
     const copyToClipboard = (e: React.MouseEvent, content: string) => {
         e.stopPropagation();
@@ -62,45 +55,56 @@ export default function Page() {
             ) : (
                 <>
                     <div className="flex flex-wrap gap-4">
-                        {prompts.map((prompt: any) => (
-                            <Card
-                                key={prompt.id}
-                                className="cursor-pointer hover:shadow-lg transition-shadow"
-                                onClick={() => setSelectedPrompt(prompt)}
-                                style={{
-                                    width: "clamp(272px, 100%, 368px)",
-                                    height: "clamp(328px, 100%, 424px)",
-                                }}
-                            >
-                                <CardContent className="p-4 h-full flex flex-col max-h-[50vh]">
-                                    <div className="flex justify-between items-center mb-2">
-                                        <h2 className="text-xl font-semibold truncate">
-                                            {prompt.name}
-                                        </h2>
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            onClick={(e) =>
-                                                copyToClipboard(
-                                                    e,
-                                                    prompt.content
-                                                )
-                                            }
-                                        >
-                                            <Copy className="h-4 w-4" />
-                                        </Button>
-                                    </div>
-                                    <p className="text-sm text-gray-500 mb-2">
-                                        Created by {prompt.creator}
-                                    </p>
-                                    <div className="flex-grow overflow-y-auto text-sm">
-                                        <p className="whitespace-pre-wrap">
-                                            {prompt.content}
+                        {prompts.length === 0 ? (
+                            <div className="w-full text-center py-8 ">
+                                <p className="text-xl text-primary font-bold">
+                                    No prompts found
+                                </p>
+                                <p className="text-base text-primary mt-2 ">
+                                    Create your first prompt to get started
+                                </p>
+                            </div>
+                        ) : (
+                            prompts.map((prompt: any) => (
+                                <Card
+                                    key={prompt.id}
+                                    className="cursor-pointer hover:shadow-lg transition-shadow"
+                                    onClick={() => setSelectedPrompt(prompt)}
+                                    style={{
+                                        width: "clamp(272px, 100%, 368px)",
+                                        height: "clamp(328px, 100%, 424px)",
+                                    }}
+                                >
+                                    <CardContent className="p-4 h-full flex flex-col max-h-[50vh]">
+                                        <div className="flex justify-between items-center mb-2">
+                                            <h2 className="text-xl font-semibold truncate">
+                                                {prompt.name}
+                                            </h2>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                onClick={(e) =>
+                                                    copyToClipboard(
+                                                        e,
+                                                        prompt.content
+                                                    )
+                                                }
+                                            >
+                                                <Copy className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                        <p className="text-sm text-gray-500 mb-2">
+                                            Created by {prompt.creator}
                                         </p>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
+                                        <div className="flex-grow overflow-y-auto text-sm">
+                                            <p className="whitespace-pre-wrap">
+                                                {prompt.content}
+                                            </p>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            ))
+                        )}
                     </div>
 
                     <Dialog

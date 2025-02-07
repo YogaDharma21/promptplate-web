@@ -22,22 +22,20 @@ import Loading from "@/app/Loading";
 import { SearchForm } from "./search-form";
 import { useEffect, useState } from "react";
 import axios from "@/lib/axios";
+import { useTag } from "@/hooks/tag";
+
 export function AppSidebar({
     user,
     ...props
 }: React.ComponentProps<typeof Sidebar> & { user: any }) {
     const [searchQuery, setSearchQuery] = useState("");
-    const [tags, setTags] = useState<any>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const filteredNavMain = tags.filter((item: any) =>
-        item.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    useEffect(() => {
-        axios.get("/api/tag").then((response) => {
-            setTags(response.data);
-            setIsLoading(false);
-        });
-    }, []);
+    const { tags, isLoading } = useTag({ middleware: "auth" });
+
+    const filteredNavMain =
+        tags?.filter((item: any) =>
+            item.name.toLowerCase().includes(searchQuery.toLowerCase())
+        ) ?? [];
+
     return (
         <Sidebar {...props}>
             <SidebarHeader>
@@ -73,7 +71,7 @@ export function AppSidebar({
                                   <SidebarMenuItem key={item.name}>
                                       <SidebarMenuButton asChild>
                                           <Link
-                                              href={`/tag/${item.name.toLowerCase()}`}
+                                              href={`/tag/${item.slug.toLowerCase()}`}
                                               className="font-medium"
                                           >
                                               {item.name}

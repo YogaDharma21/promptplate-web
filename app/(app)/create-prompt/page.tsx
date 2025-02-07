@@ -37,10 +37,6 @@ export default function page() {
     return (
         <div className="flex flex-1 flex-col gap-4 px-4">
             <PromptForm user={user} tags={tags} />
-            {/* <div className="aspect-video h-12 w-full rounded-lg bg-muted/50" />
-                    <div className="aspect-video h-12 w-full rounded-lg bg-muted/50" />
-                    <div className="aspect-video h-40 md:h-96 w-full rounded-lg bg-muted/50" />
-                    <div className="aspect-video h-12 w-40 rounded-lg bg-muted/50" /> */}
         </div>
     );
 }
