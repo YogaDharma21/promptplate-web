@@ -24,7 +24,6 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
     if (!user) {
         return <Loading />;
     }
-
     return (
         <SidebarProvider>
             <AppSidebar user={user} />

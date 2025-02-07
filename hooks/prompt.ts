@@ -24,7 +24,7 @@ export const usePrompt = ({ middleware, redirectTo }: any) => {
             revalidateOnFocus: true,
         }
     );
-
+    console.log(prompts);
     const createPrompt = async ({ setErrors, ...formData }: any) => {
         setErrors([]);
         try {

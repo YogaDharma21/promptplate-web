@@ -12,10 +12,13 @@ import {
 import { usePrompt } from "@/hooks/prompt";
 import { useToast } from "@/hooks/use-toast";
 import axios from "@/lib/axios";
-import { Copy, LucideMessageCircleQuestion } from "lucide-react";
+import { Copy, LucideMessageCircleQuestion, Pencil } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/hooks/auth";
 
 export default function Page() {
+    const { user } = useAuth({ middleware: "auth" });
     const [selectedPrompt, setSelectedPrompt] = useState<any>(null);
     const { toast } = useToast();
     const { prompts, isLoading } = usePrompt({ middleware: "auth" });
@@ -80,18 +83,35 @@ export default function Page() {
                                             <h2 className="text-xl font-semibold truncate">
                                                 {prompt.name}
                                             </h2>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                onClick={(e) =>
-                                                    copyToClipboard(
-                                                        e,
-                                                        prompt.content
-                                                    )
-                                                }
-                                            >
-                                                <Copy className="h-4 w-4" />
-                                            </Button>
+                                            <div className="flex gap-2">
+                                                {user.id === prompt.user_id && (
+                                                    <Link
+                                                        href={`/edit-prompt/${prompt.id}`}
+                                                        onClick={(e) =>
+                                                            e.stopPropagation()
+                                                        }
+                                                    >
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                        >
+                                                            <Pencil className="h-4 w-4" />
+                                                        </Button>
+                                                    </Link>
+                                                )}
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={(e) =>
+                                                        copyToClipboard(
+                                                            e,
+                                                            prompt.content
+                                                        )
+                                                    }
+                                                >
+                                                    <Copy className="h-4 w-4" />
+                                                </Button>
+                                            </div>
                                         </div>
                                         <p className="text-sm text-gray-500 mb-2">
                                             Created by {prompt.creator}
@@ -128,7 +148,17 @@ export default function Page() {
                                         {selectedPrompt.content}
                                     </p>
                                 </div>
-                                <div className="mt-4 flex justify-end">
+                                <div className="mt-4 flex justify-end gap-2">
+                                    {user.id === selectedPrompt.user_id && (
+                                        <Link
+                                            href={`/edit-prompt/${selectedPrompt.id}`}
+                                        >
+                                            <Button variant="ghost">
+                                                <Pencil className="h-4 w-4" />
+                                                <p>Edit</p>
+                                            </Button>
+                                        </Link>
+                                    )}
                                     <Button
                                         onClick={(e) =>
                                             copyToClipboard(
