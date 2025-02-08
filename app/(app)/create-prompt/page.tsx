@@ -1,7 +1,8 @@
 "use client";
 import Loading from "@/app/Loading";
 import { AppSidebar } from "@/components/app-sidebar";
-import PromptForm from "@/components/prompt-form";
+import PromptCreateForm from "@/components/prompt-create-form";
+import PromptForm from "@/components/prompt-create-form";
 import { SiteHeader } from "@/components/site-header";
 import {
     Breadcrumb,
@@ -36,7 +37,7 @@ export default function page() {
     }
     return (
         <div className="flex flex-1 flex-col gap-4 px-4">
-            <PromptForm user={user} tags={tags} />
+            <PromptCreateForm user={user} tags={tags} />
         </div>
     );
 }

@@ -57,7 +57,7 @@ export default function Page() {
                 </div>
             ) : (
                 <>
-                    <div className="flex flex-wrap gap-4">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                         {prompts.length === 0 ? (
                             <div className="w-full text-center py-8 ">
                                 <p className="text-xl text-primary font-bold">
@@ -73,10 +73,6 @@ export default function Page() {
                                     key={prompt.id}
                                     className="cursor-pointer hover:shadow-lg transition-shadow"
                                     onClick={() => setSelectedPrompt(prompt)}
-                                    style={{
-                                        width: "clamp(272px, 100%, 368px)",
-                                        height: "clamp(328px, 100%, 424px)",
-                                    }}
                                 >
                                     <CardContent className="p-4 h-full flex flex-col max-h-[50vh]">
                                         <div className="flex justify-between items-center mb-2">
@@ -117,7 +113,7 @@ export default function Page() {
                                             Created by {prompt.creator}
                                         </p>
                                         <div className="flex-grow overflow-y-auto text-sm">
-                                            <p className="whitespace-pre-wrap">
+                                            <p className="whitespace-pre-wrap break-words">
                                                 {prompt.content}
                                             </p>
                                         </div>
@@ -144,7 +140,7 @@ export default function Page() {
                                     </DialogDescription>
                                 </DialogHeader>
                                 <div className="mt-4 flex-grow overflow-y-auto">
-                                    <p className="whitespace-pre-wrap">
+                                    <p className="whitespace-pre-wrap break-words">
                                         {selectedPrompt.content}
                                     </p>
                                 </div>

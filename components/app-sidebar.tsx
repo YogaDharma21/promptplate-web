@@ -60,25 +60,33 @@ export function AppSidebar({
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarMenu>
-                        {isLoading
-                            ? Array.from({ length: 10 }).map((_, index) => (
-                                  <div
-                                      key={index}
-                                      className="aspect-video h-12 w-full rounded-lg bg-muted/50"
-                                  />
-                              ))
-                            : filteredNavMain.map((item: any) => (
-                                  <SidebarMenuItem key={item.name}>
-                                      <SidebarMenuButton asChild>
-                                          <Link
-                                              href={`/tag/${item.slug.toLowerCase()}`}
-                                              className="font-medium"
-                                          >
-                                              {item.name}
-                                          </Link>
-                                      </SidebarMenuButton>
-                                  </SidebarMenuItem>
-                              ))}
+                        {isLoading ? (
+                            Array.from({ length: 10 }).map((_, index) => (
+                                <div
+                                    key={index}
+                                    className="aspect-video h-12 w-full rounded-lg bg-muted/50"
+                                />
+                            ))
+                        ) : filteredNavMain.length === 0 ? (
+                            <div className="w-full text-center py-8">
+                                <p className="text-xl text-primary font-bold">
+                                    No tags found
+                                </p>
+                            </div>
+                        ) : (
+                            filteredNavMain.map((item: any) => (
+                                <SidebarMenuItem key={item.name}>
+                                    <SidebarMenuButton asChild>
+                                        <Link
+                                            href={`/tag/${item.slug.toLowerCase()}`}
+                                            className="font-medium"
+                                        >
+                                            {item.name}
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                            ))
+                        )}
                     </SidebarMenu>
                 </SidebarGroup>
             </SidebarContent>

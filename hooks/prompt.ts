@@ -10,21 +10,14 @@ export const usePrompt = ({ middleware, redirectTo }: any) => {
         data: prompts,
         error,
         mutate,
-    } = useSWR(
-        "/api/prompt",
-        () =>
-            axios
-                .get("/api/prompt")
-                .then((res) => res.data)
-                .catch((error) => {
-                    throw error;
-                }),
-        {
-            refreshInterval: 30000, // Refresh every 30 seconds
-            revalidateOnFocus: true,
-        }
+    } = useSWR("/api/prompt", () =>
+        axios
+            .get("/api/prompt")
+            .then((res) => res.data)
+            .catch((error) => {
+                throw error;
+            })
     );
-    console.log(prompts);
     const createPrompt = async ({ setErrors, ...formData }: any) => {
         setErrors([]);
         try {

@@ -54,7 +54,13 @@ const formSchema = z.object({
     }),
 });
 
-export default function PromptForm({ user, tags }: { user: any; tags: any }) {
+export default function PromptCreateForm({
+    user,
+    tags,
+}: {
+    user: any;
+    tags: any;
+}) {
     const { createPrompt } = usePrompt({});
     const { toast } = useToast();
     const router = useRouter();
