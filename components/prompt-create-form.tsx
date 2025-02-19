@@ -41,6 +41,8 @@ import {
 } from "./ui/command";
 import { Textarea } from "./ui/textarea";
 import { usePrompt } from "@/hooks/prompt";
+import axios from "@/lib/axios";
+import Loading from "@/app/Loading";
 
 const formSchema = z.object({
     name: z.string().min(1, {
@@ -54,16 +56,23 @@ const formSchema = z.object({
     }),
 });
 
-export default function PromptCreateForm({
-    user,
-    tags,
-}: {
-    user: any;
-    tags: any;
-}) {
+interface Tag {
+    id: number;
+    name: string;
+}
+
+export default function PromptCreateForm() {
     const { createPrompt } = usePrompt({});
     const { toast } = useToast();
     const router = useRouter();
+    const { user } = useAuth({});
+    const [tags, setTags] = useState<Tag[]>([]);
+
+    useEffect(() => {
+        axios.get("/api/tag").then((response) => {
+            setTags(response.data);
+        });
+    }, []);
 
     const [errors, setErrors] = useState<any>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -74,7 +83,9 @@ export default function PromptCreateForm({
             content: "",
         },
     });
-
+    if (!user) {
+        return <Loading />;
+    }
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
         setErrors([]);

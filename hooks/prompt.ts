@@ -29,6 +29,19 @@ export const usePrompt = ({ middleware, redirectTo }: any) => {
             return { success: false, error };
         }
     };
+    const updatePrompt = async ({ setErrors, ...formData }: any) => {
+        setErrors([]);
+        try {
+            const response = await axios.put(`/api/prompt/${formData.id}`, {
+                ...formData,
+            });
+            await mutate();
+            return { success: true, data: response.data };
+        } catch (error: any) {
+            setErrors(error.response.data.errors);
+            return { success: false, error };
+        }
+    };
 
     useEffect(() => {
         if (middleware == "auth" && redirectTo) {

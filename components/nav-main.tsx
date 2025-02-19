@@ -50,6 +50,7 @@ export function NavMain({
                                     <span>{item.title}</span>
                                 </a>
                             </SidebarMenuButton>
+
                             {item.items?.length ? (
                                 <>
                                     <CollapsibleTrigger asChild>
