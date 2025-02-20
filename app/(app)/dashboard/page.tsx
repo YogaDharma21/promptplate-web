@@ -43,7 +43,6 @@ export default function Page() {
                 });
             });
     };
-
     return (
         <div className="container mx-auto p-4">
             {isLoading ? (
@@ -109,9 +108,11 @@ export default function Page() {
                                                 </Button>
                                             </div>
                                         </div>
-                                        <p className="text-sm text-gray-500 mb-2">
-                                            Created by {prompt.creator}
-                                        </p>
+                                        <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                                            <p>Created by {prompt.creator}</p>
+                                            <span>•</span>
+                                            <p>{prompt.tag_name}</p>
+                                        </div>
                                         <div className="flex-grow overflow-y-auto text-sm">
                                             <p className="whitespace-pre-wrap break-words">
                                                 {prompt.content}
@@ -135,8 +136,12 @@ export default function Page() {
                                     <DialogTitle>
                                         {selectedPrompt.name}
                                     </DialogTitle>
-                                    <DialogDescription>
-                                        Created by {selectedPrompt.creator}
+                                    <DialogDescription className="flex items-center gap-2">
+                                        <span>
+                                            Created by {selectedPrompt.creator}
+                                        </span>
+                                        <span>•</span>
+                                        <span>{selectedPrompt.tag_name}</span>
                                     </DialogDescription>
                                 </DialogHeader>
                                 <div className="mt-4 flex-grow overflow-y-auto">

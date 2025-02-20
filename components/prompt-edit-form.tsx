@@ -44,6 +44,7 @@ import { Textarea } from "./ui/textarea";
 import { usePrompt } from "@/hooks/prompt";
 import Loading from "@/app/Loading";
 import { useTag } from "@/hooks/tag";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const formSchema = z.object({
     name: z.string().min(1, {
@@ -125,7 +126,14 @@ export default function EditPromptForm({ slug }: { slug: string }) {
     }
 
     if (!prompt) {
-        return <div>Loading...</div>;
+        return (
+            <div className="flex flex-col gap-4">
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-[250px] lg:h-[350px] w-full" />
+                <Skeleton className="h-10 w-24 self-end" />
+            </div>
+        );
     }
 
     if (!user || user.id !== prompt.user_id) {
