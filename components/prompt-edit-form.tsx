@@ -68,7 +68,7 @@ export default function EditPromptForm({ slug }: { slug: string }) {
     const { tags } = useTag({ middleware: "auth" });
 
     const { user } = useAuth({ middleware: "auth" });
-    const { createPrompt } = usePrompt({});
+    const { updatePrompt } = usePrompt({});
     const { toast } = useToast();
     const router = useRouter();
 
@@ -95,37 +95,28 @@ export default function EditPromptForm({ slug }: { slug: string }) {
         setIsLoading(true);
         setErrors([]);
         try {
-            // const response = await createPrompt({
-            //     name: values.name,
-            //     content: values.content,
-            //     tag_id: values.tag,
-            //     setErrors,
-            // });
-            console.log(
-                "name",
-                values.name,
-                "content",
-                values.content,
-                "tag_id",
-                values.tag,
-                "prompt_id",
-                prompt.id
-            );
-            // if (response?.success) {
-            //     router.push("/dashboard");
-            //     toast({
-            //         title: "Success",
-            //         description:
-            //             "Creating prompt successful! Redirecting to your dashboard.",
-            //         variant: "default",
-            //     });
-            // } else {
-            //     toast({
-            //         title: "Error",
-            //         description: response?.error.response.data.message,
-            //         variant: "destructive",
-            //     });
-            // }
+            const response = await updatePrompt({
+                name: values.name,
+                content: values.content,
+                tag_id: values.tag,
+                id: prompt.id,
+                setErrors,
+            });
+            if (response?.success) {
+                router.push("/dashboard");
+                toast({
+                    title: "Success",
+                    description:
+                        "Creating prompt successful! Redirecting to your dashboard.",
+                    variant: "default",
+                });
+            } else {
+                toast({
+                    title: "Error",
+                    description: response?.error.response.data.message,
+                    variant: "destructive",
+                });
+            }
         } catch (error) {
             console.error("An error occurred: ", error);
         } finally {

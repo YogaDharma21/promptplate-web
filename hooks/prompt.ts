@@ -54,5 +54,6 @@ export const usePrompt = ({ middleware, redirectTo }: any) => {
         error,
         isLoading: !error && !prompts,
         createPrompt,
+        updatePrompt,
     };
 };
