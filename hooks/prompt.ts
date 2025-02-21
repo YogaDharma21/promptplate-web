@@ -18,17 +18,19 @@ export const usePrompt = ({ middleware, redirectTo }: any) => {
                 throw error;
             })
     );
+
     const createPrompt = async ({ setErrors, ...formData }: any) => {
         setErrors([]);
         try {
             const response = await axios.post("/api/prompt", formData);
-            await mutate(); // Revalidate the prompts after creating a new one
+            await mutate();
             return { success: true, data: response.data };
         } catch (error: any) {
             setErrors(error.response.data.errors);
             return { success: false, error };
         }
     };
+
     const updatePrompt = async ({ setErrors, ...formData }: any) => {
         setErrors([]);
         try {
