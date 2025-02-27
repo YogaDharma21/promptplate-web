@@ -1,36 +1,142 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<a id="readme-top"></a>
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/github_username/repo_name">
+    <img src="public/logo.png" alt="Logo" width="80" height="80">
+  </a>
+
+<h3 align="center">Prompt Plate (web version)</h3>
+  <p align="center">
+    Work with AI with your command in charge
+    <br />
+    <a href="https://github.com/YogaDharma21/promptplate">View Demo</a>
+    &middot;
+    <a href="https://github.com/YogaDharma21/promptplate/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    &middot;
+    <a href="https://github.com/YogaDharma21/promptplate/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+  </p>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+      <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
+
+<!-- ABOUT THE PROJECT -->
+
+## About The Project
+
+[![Product Name Screen Shot][product-screenshot]](https://example.com)
+
+Crafting the correct prompt for an AI can spell the change in response that one is looking for. Our platform enables users to find suitable and relevant prompts for image creation, content spinning, coding, and any other creative activity and share them with other people. Users can now browse, search, and utilize prompts that have been tested and perfected without wasting their time trying to figure out what works best.
+
+As important as searching is, sharing equally holds the same level of importance. Users can add their prompts, rate other prompts, and assist in developing a general collection of quality inputs. Whether someone is a novice in need of direction or a professional trying to optimize their AI interactions, our platform allows people to find and share the most relevant and suitable prompts with ease.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Built With
+
+[![Next][Next.js]][Next-url] [![Laravel][Laravel.com]][Laravel-url] [![expo][expo.com]][expo-url]
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- GETTING STARTED -->
 
 ## Getting Started
 
-First, run the development server:
+This is an example of how you may give instructions on setting up your project locally.
+To get a local copy up and running follow these simple example steps.
 
-```bash
+### Prerequisites
+
+- **Node.js:** Ensure you have Node.js installed.
+- **npm:** npm comes bundled with Node.js installation.
+
+### Installation
+
+1. **Clone the repository:**
+    ```sh
+    git clone https://github.com/YogaDharma21/promptplate-web
+    ```
+
+2. **Navigate into the project directory:**
+    ```sh
+    cd promptplate-web
+    ```
+
+3. **Install the dependencies:**
+    ```sh
+    npm install
+    ```
+
+4. **Configure your API key:**
+   Create a `.env.local` file in the root directory and add your API key:
+    ```env
+    NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+    ```
+
+### Running the Project
+
+Start the development server with:
+```sh
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contributing
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
 
-## Learn More
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-To learn more about Next.js, take a look at the following resources:
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Distributed under the project_license. See `LICENSE.txt` for more information.
 
-## Deploy on Vercel
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+<!-- CONTACT -->
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contact
+
+Yoga Dharma - [@yogadharma21\_](https://www.instagram.com/yogadharma21_/) - yogadharmaputra2006@gmail.com
+
+Project Link: [https://github.com/YogaDharma21/promptplate](https://github.com/YogaDharma21/promptplate)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+[product-screenshot]: public/screenshot.png
+[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Next-url]: https://nextjs.org/
+[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
+[Laravel-url]: https://laravel.com
+[expo.com]: https://img.shields.io/badge/expo-000000?style=for-the-badge&logo=expo&logoColor=white
+[expo-url]: https://expo.dev
